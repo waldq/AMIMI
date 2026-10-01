@@ -130,7 +130,7 @@ public class MultiblockPreviewWidget extends ParentWidget<MultiblockPreviewWidge
                                     .height(20)
                                     .crossAxisAlignment(Alignment.CrossAxis.CENTER)
                                     .child(
-                                            RecipeViewerSlotWidget.create()
+                                            RecipeViewerSlotWidget.create(ItemStack.class)
                                                     .recipeSlotRole(RecipeSlotRole.OUTPUT)
                                                     .value(stack)
                                                     .background(IDrawable.EMPTY)

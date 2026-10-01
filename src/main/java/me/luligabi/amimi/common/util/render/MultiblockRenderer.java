@@ -19,6 +19,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import org.jetbrains.annotations.NotNull;
+import org.joml.Vector3f;
 
 import java.util.*;
 
@@ -90,12 +91,13 @@ public class MultiblockRenderer extends SchemaRenderer {
         int mouseX = context.getMouseX();
         int mouseY = context.getMouseY();
 
+        Vector3f p = context.graphicsPose().last().pose().transformPosition(x, y, 0, new Vector3f());
+        int transformX = Math.round(p.x);
+        int transformY = Math.round(p.y);
+
         context.getGraphics().flush();
         context.graphicsPose().pushPose();
 
-        Area area = context.getScreenArea();
-        int transformX = context.transformX(x, y) + area.x();
-        int transformY = context.transformY(x, y) + area.y();
         ((BaseSchemaRendererAccessor) this).getViewport().calculateOpenGLViewportFromRectangle(transformX, transformY, width, height);
         ((BaseSchemaRendererAccessor) this).getViewport().applyViewport();
 
