@@ -1,5 +1,6 @@
 package me.luligabi.amimi.common.util.render;
 
+import brachy.modularui.drawable.GuiDraw;
 import brachy.modularui.drawable.SchemaRenderer;
 import brachy.modularui.drawable.schema.BlockHighlight;
 import brachy.modularui.screen.viewport.GuiContext;
@@ -7,6 +8,7 @@ import brachy.modularui.theme.WidgetTheme;
 import brachy.modularui.utils.Color;
 import brachy.modularui.widget.sizer.Area;
 import com.google.common.collect.Lists;
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import me.luligabi.amimi.client.ClientConfig;
 import me.luligabi.amimi.common.mixin.BaseSchemaRendererAccessor;
@@ -20,6 +22,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
+import org.joml.Vector3fc;
 
 import java.util.*;
 
@@ -149,6 +152,18 @@ public class MultiblockRenderer extends SchemaRenderer {
         if (this.captureDebugInfo()) {
             drawProjectedBlockPos(context.getGraphics(), width, height);
         }
+    }
+
+    @Override
+    protected void setupCamera(final int width, final int height) {
+        super.setupCamera(width, height);
+
+        final Vector3f p = this.camera().pos();
+        RenderSystem.getModelViewStack().translate(p.x, p.y, p.z);
+        RenderSystem.applyModelViewMatrix();
+
+        this.projection().set(RenderSystem.getModelViewMatrix()).translate(-p.x, -p.y, -p.z);
+        RenderSystem.getProjectionMatrix().mul(this.projection(), this.projection());
     }
 
     private void addHighlightCache(final Map<BlockPos, MultiblockSchemaInfo.HatchData> hatchData) {
