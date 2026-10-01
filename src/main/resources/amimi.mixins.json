@@ -8,6 +8,7 @@
     "ViewerSetupMixin"
   ],
   "client": [
+    "LevelRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1
